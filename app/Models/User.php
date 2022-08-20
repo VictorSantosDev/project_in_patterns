@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\rules\RulesAndFeedBacks;
 
 class User extends Authenticatable
 {
@@ -13,25 +14,14 @@ class User extends Authenticatable
 
     public function rules(): array
     {
-        $regex = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/";
-        return [
-            "name" => "required|min:3|max:150",
-            "email" => "required|min:10",
-            "password" => "required|confirmed|min:8|max:15|regex:$regex",
-            "password_confirmation" => "required|min:8|max:15|regex:$regex"
-        ];
+        $rulesAndFeedbacks = new RulesAndFeedBacks;
+        return $rulesAndFeedbacks->registerRules();
     }
 
     public function feedback(): array
     {
-        return [
-            'name.min' => 'Campo nome inválido',
-            'required' => 'O campo não pode ser vazio!',
-            'email.min' => 'O e-mail não é valido!',
-            'email.unique' => 'E-mail já esta em uso!',
-            'password.confirmed' => 'Senhas inválidas por gentileza verifique!',
-            'password.regex' => 'Senha deve conter números, letras e simbolos!'
-        ];
+        $rulesAndFeedbacks = new RulesAndFeedBacks();
+        return $rulesAndFeedbacks->registerFeedback();
     }
 
     /**

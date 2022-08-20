@@ -20,17 +20,22 @@
     <div class="card">
     <div class="card-body login-card-body">
     <p class="login-box-msg">Iniciar sessão</p>
-    <form action="../../index3.html" method="post">
+    <form action="{{ route('auth') }}" method="post">
+        @csrf   
+    
+    <span class="text-danger">{{ $errors->has('email') ? $errors->first('email') : '' }}</span>
     <div class="input-group mb-3">
-    <input type="email" class="form-control" placeholder="Email">
+    <input type="email" name="email" class="form-control" value="{{ old('email')}}" placeholder="Email">
     <div class="input-group-append">
     <div class="input-group-text">
     <span class="fas fa-envelope"></span>
     </div>
     </div>
     </div>
+
+    <span class="text-danger">{{ $errors->has('password') ? $errors->first('password') : '' }}</span>
     <div class="input-group mb-3">
-    <input type="password" class="form-control" placeholder="Senha">
+    <input type="password" name="password" class="form-control" value="{{ old('password')}}" placeholder="Senha">
     <div class="input-group-append">
     <div class="input-group-text">
     <span class="fas fa-lock"></span>

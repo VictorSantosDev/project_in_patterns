@@ -6,6 +6,8 @@ interface UserRepositoryInterface
 {
     public function all();
 
+    public function where($key, $value);
+
     public function rules();
 
     public function feedback();

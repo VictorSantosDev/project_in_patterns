@@ -16,6 +16,11 @@ abstract class AbstractRepository
         return $this->model->all();
     }
 
+    public function where($key, $value)
+    {
+        return $this->model->where($key, $value);
+    }
+
     public function rules()
     {
         return $this->model->rules();
