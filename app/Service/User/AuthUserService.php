@@ -4,6 +4,7 @@ namespace App\Service\User;
 
 use Illuminate\Http\Request;
 use App\rules\RulesAndFeedBacks;
+use Illuminate\Support\Facades\Cache;
 
 class AuthUserService extends AbstractUserService
 {
@@ -14,7 +15,9 @@ class AuthUserService extends AbstractUserService
     public function authUser(Request $request)
     {
         $rulesAndFeedBacks = new RulesAndFeedBacks;
-        $request->validate($rulesAndFeedBacks->authUserRules(), $rulesAndFeedBacks->authUserFeedback());
+        $request->validate(
+            $rulesAndFeedBacks->authUserRules(), $rulesAndFeedBacks->authUserFeedback()
+        );
         
         /**
         * description: verifica se usuário existe
@@ -33,7 +36,6 @@ class AuthUserService extends AbstractUserService
         /**
         * description: gera o token do usuário para manter logado (PENDENTE EM DEV)
         */
-        dd(self::AUTH_SUCCESS);
         return self::AUTH_SUCCESS;
     }
 
@@ -43,6 +45,7 @@ class AuthUserService extends AbstractUserService
             ->where('email', $request->email)
             ->where('password', md5($request->password))
             ->whereNotNull('email_verified_at')
+            ->whereNull('verify_email')
         ->first();
         return $verifyUser === null;
     }
@@ -55,6 +58,19 @@ class AuthUserService extends AbstractUserService
         ->first();
 
         return $verifyUser === null;
+    }
+
+    public function verifyAuth($token)
+    {
+        if(!Cache::has('auth')){
+            return false;
+        }
+        if(Cache::get('auth') != $token){
+            Cache::forget('auth');
+            return false;
+        }
+
+        return Cache::has('auth') AND Cache::get('auth') === $token;
     }
 
     public function generateToken()

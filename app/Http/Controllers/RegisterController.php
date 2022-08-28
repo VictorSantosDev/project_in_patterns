@@ -30,4 +30,18 @@ class RegisterController extends Controller
 
         return redirect()->route('signin')->with('msg', 'Cadastro realizado com sucesso!');
     }
+
+    public function verifyEmail($token)
+    {
+        $tokenUser = $this->userService->verifyEmail($token);
+
+        if(!$tokenUser)
+        {
+            return redirect()->route('signin');
+        }
+
+        return redirect()->route('check-auth', [
+            'token' => $tokenUser
+        ]);
+    }
 }
