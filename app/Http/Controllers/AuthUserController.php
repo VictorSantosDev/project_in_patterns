@@ -36,7 +36,7 @@ class AuthUserController extends Controller
         }
 
         if($selectRoute === 'success'){
-            return redirect()->route('app.home', ['token' => 'token?'.Cache::get('auth')]);
+            return redirect()->route('app.home', ['token' => Cache::get('auth')]);
         }
         
         throw new Exception('ERRO: Algo inesperado ocorreu na autenticação!');

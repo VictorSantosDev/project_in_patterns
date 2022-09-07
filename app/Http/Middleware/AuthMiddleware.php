@@ -23,25 +23,23 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $tokenUrl = '';
+        $uri = $_SERVER['REQUEST_URI'];
+        $uriToken = str_replace('/app/home/', '', $uri);
 
-        if(!isset(array_keys($_GET)[0])){
-            dd($_GET);
+        if(empty($uriToken) || $uriToken === '' || $uriToken === null){
             return redirect()->route('signin')->with('msg', 'Link quebrado, faça o reset de senha!');
         }
-
-        $tokenUrl = array_keys($_GET)[0];
         
         if(!Cache::has('auth')){
             return redirect()->route('signin')->with('msg', 'Nessesário fazer o login novamente!');
         }
 
-        $authCheck = $this->userService->authCheckMiddleware($tokenUrl);
+        $authCheck = $this->userService->authCheckMiddleware($uriToken);
         if(!$authCheck){
             return redirect()->route('signin')->with('msg', 'Usuário precisa confirmar o e-mail!');
         }
 
-        Cache::put('auth', $tokenUrl, 6000);
+        Cache::put('auth', $uriToken, 6000);
         return $next($request);
     }
 }
