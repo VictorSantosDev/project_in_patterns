@@ -36,6 +36,8 @@ class AuthUserService extends AbstractUserService
         /**
         * description: gera o token do usuário para manter logado (PENDENTE EM DEV)
         */
+        $token = $this->generateTokenAccess($request->email);
+        $this->authUserNow($request, $token);
         return self::AUTH_SUCCESS;
     }
 
@@ -73,8 +75,21 @@ class AuthUserService extends AbstractUserService
         return Cache::has('auth') AND Cache::get('auth') === $token;
     }
 
-    public function generateToken()
+    public function generateTokenAccess($email)
     {
-        // aguardando logica de verificação de email...
+        $date = date('Y-m-d H:i:s');
+        return hash("sha256", $email . $date);
+    }
+
+    public function authUserNow($request, $token)
+    {
+        $authUser = $this->repository
+                        ->where('email', $request->email)
+                        ->where('password', md5($request->password))
+                        ->first();
+
+        $authUser->authenticated_token = $token;
+        Cache::put('auth', $token, 6000);
+        $authUser->save();
     }
 }

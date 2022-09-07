@@ -26,7 +26,8 @@ class AuthMiddleware
         $tokenUrl = '';
 
         if(!isset(array_keys($_GET)[0])){
-            return redirect()->route('signin')->with('msg', 'Link quebrado faça o reset de senha!');
+            dd($_GET);
+            return redirect()->route('signin')->with('msg', 'Link quebrado, faça o reset de senha!');
         }
 
         $tokenUrl = array_keys($_GET)[0];
