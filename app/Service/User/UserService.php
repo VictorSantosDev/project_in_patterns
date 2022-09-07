@@ -128,4 +128,15 @@ class UserService extends AbstractUserService
 
         return !empty($checkUser);
     }
+
+    public function resetPasswordUser($request)
+    {
+        $userReset = $this->repository->where('email', $request->email)->first();
+        $this->emailResetPassword($userReset);
+    }
+
+    public function emailResetPassword($user)
+    {
+        
+    }
 }

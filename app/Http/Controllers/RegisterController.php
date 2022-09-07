@@ -31,6 +31,17 @@ class RegisterController extends Controller
         return redirect()->route('signin')->with('msg', 'Cadastro realizado com sucesso!');
     }
 
+    public function resetPassword()
+    {
+        return view('login.reset-password');
+    }
+
+    public function resetPasswordUser(Request $request)
+    {
+        $this->userService->resetPasswordUser($request);
+        return view('login.reset-password');
+    }
+
     public function verifyEmail($token)
     {
         $tokenUser = $this->userService->verifyEmail($token);

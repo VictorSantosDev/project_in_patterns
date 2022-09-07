@@ -52,7 +52,7 @@
     </form>
     
     <p class="mb-1">
-    <a href="#">Esqueceu a senha?</a>
+    <a href="{{ route('reset-password') }}">Esqueceu a senha?</a>
     </p>
     <p class="mb-0">
     <a href="{{ route('form-register')}}" class="text-center">Crair uma nova conta!</a>
