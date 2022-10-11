@@ -46,4 +46,19 @@ class RulesAndFeedBacks
             'password.min' => 'Senha tem que ter no minimo 8 caracteres!'
         ];
     }
+
+    public function validatorEmailRules(): array
+    {
+        return [
+            'email' => 'required|email'
+        ];
+    }
+
+    public function validatorEmailFeedback(): array
+    {
+        return [
+            'required' => 'Campo e-mail inválido',
+            'email' => 'O e-mail está inválido'
+        ];
+    }
 }

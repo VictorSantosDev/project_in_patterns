@@ -4,13 +4,18 @@ namespace App\Service\User;
 
 use Illuminate\Http\Request;
 use App\Mail\verificationEmail;
+use App\Mail\resetPasswordEmail;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use \Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPassword\ResetPassword;
+use App\rules\RulesAndFeedBacks;
 
 class UserService extends AbstractUserService
 {
+    const URI_NEW_PASSWORD = '/reset/newPassword/';
 
+    private $hashResetPassword = '';
     /**
      * Create a new message instance.
      *
@@ -74,7 +79,7 @@ class UserService extends AbstractUserService
     public function generateHashVerify($email): string
     {
         $date = date('Y-m-d H:i:s');
-        return hash("sha256", $email . $date);
+        return $this->hashResetPassword = hash("sha256", $email . $date);
     }
 
     public function verifyEmail($token)
@@ -129,14 +134,33 @@ class UserService extends AbstractUserService
         return !empty($checkUser);
     }
 
-    public function resetPasswordUser($request)
+    private function constructLink(): string
     {
-        $userReset = $this->repository->where('email', $request->email)->first();
-        $this->emailResetPassword($userReset);
+        return $_SERVER['HTTP_ORIGIN'].self::URI_NEW_PASSWORD.$this->hashResetPassword;
     }
 
-    public function emailResetPassword($user)
+    public function resetPasswordUser($request)
     {
+        $rulesAndFeedBacks = new RulesAndFeedBacks;
+
+        $request->validate(
+            $rulesAndFeedBacks->validatorEmailRules(),
+            $rulesAndFeedBacks->validatorEmailFeedback(),
+        );
         
+        $userReset = $this->repository->where('email', $request->email)->first();
+        $this->generateHashVerify($userReset->email);
+
+        $userReset->reset_passsword = $this->hashResetPassword;
+        $userReset->save();
+        
+        $construct = new ResetPassword(
+            'Recuperar conta do NEXTBANK!',
+            $userReset->email,
+            $userReset->name,
+            $this->constructLink()
+        );
+
+        $construct->handle();
     }
 }

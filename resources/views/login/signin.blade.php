@@ -2,7 +2,6 @@
 
 @section('title')
 @section('content')
-
     @if(session('msg'))
         <div class="alert {{ session('not_active') || session('not_exist') ? 'alert-warning' : 'alert-success' }} alert-dismissible fade show" role="alert">
             {{ session('msg') }}

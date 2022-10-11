@@ -39,7 +39,9 @@ class RegisterController extends Controller
     public function resetPasswordUser(Request $request)
     {
         $this->userService->resetPasswordUser($request);
-        return view('login.reset-password');
+        return redirect()
+                ->route('signin')
+                ->with('msg', 'E-mail enviado para resete de senha!');
     }
 
     public function verifyEmail($token)
@@ -54,5 +56,12 @@ class RegisterController extends Controller
         return redirect()->route('check-auth', [
             'token' => $tokenUser
         ]);
+    }
+
+    public function resetNewPassword($hash)
+    {
+
+        // return 
+        // dd('ok voce está aqui');
     }
 }
