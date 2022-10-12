@@ -30,7 +30,3 @@ Route::get('/verify/email/token/{token}', [RegisterController::class, 'verifyEma
 // authenticate
 Route::get('/check/authUser/{token}', [AuthUserController::class, 'checkAuthUser'])->name('check-auth');
 Route::post('/auth', [AuthUserController::class, 'auth'])->name('auth');
-
-Route::prefix('/app')->middleware('authUser')->group(function() {
-    Route::get('/home/{token?}', [HomeController::class, 'index'])->name('app.home');
-});

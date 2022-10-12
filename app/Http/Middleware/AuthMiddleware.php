@@ -23,23 +23,26 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $uri = $_SERVER['REQUEST_URI'];
-        $uriToken = str_replace('/app/home/', '', $uri);
+        // $uriServe = $_SERVER['REQUEST_URI'];
 
-        if(empty($uriToken) || $uriToken === '' || $uriToken === null){
-            return redirect()->route('signin')->with('msg', 'Link quebrado, faça o reset de senha!');
-        }
+        // $uriExplode = explode('/', $uriServe);
+
+        // $uriToken = array_pop( $uriExplode);
+
+        // if(empty($uriToken) || $uriToken === '' || $uriToken === null){
+        //     return redirect()->route('signin')->with('msg', 'Link quebrado, faça o reset de senha!');
+        // }
         
-        if(!Cache::has('auth')){
-            return redirect()->route('signin')->with('msg', 'Nessesário fazer o login novamente!');
-        }
+        // if(!Cache::has('auth')){
+        //     return redirect()->route('signin')->with('msg', 'Nessesário fazer o login novamente!');
+        // }
 
-        $authCheck = $this->userService->authCheckMiddleware($uriToken);
-        if(!$authCheck){
-            return redirect()->route('signin')->with('msg', 'Usuário precisa confirmar o e-mail!');
-        }
+        // $authCheck = $this->userService->authCheckMiddleware($uriToken);
+        // if(!$authCheck){
+        //     return redirect()->route('signin')->with('msg', 'Usuário precisa confirmar o e-mail!');
+        // }
 
-        Cache::put('auth', $uriToken, 6000);
+        // Cache::put('auth', $uriToken, 6000);
         return $next($request);
     }
 }

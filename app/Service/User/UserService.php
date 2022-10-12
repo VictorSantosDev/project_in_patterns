@@ -115,25 +115,6 @@ class UserService extends AbstractUserService
         return $hashAuthenticated;
     }
 
-    public function authCheckMiddleware($token)
-    {
-        $checkUser = '';
-        
-        if(!Cache::has('auth')){
-            return false;
-        }
-
-        if(Cache::get('auth') != $token){
-            return false;
-        }
-
-        $checkUser = $this->repository->where('authenticated_token', $token)
-                                        ->whereNotNull('email_verified_at')
-                                        ->first();
-
-        return !empty($checkUser);
-    }
-
     private function constructLink(): string
     {
         return $_SERVER['HTTP_ORIGIN'].self::URI_NEW_PASSWORD.$this->hashResetPassword;
