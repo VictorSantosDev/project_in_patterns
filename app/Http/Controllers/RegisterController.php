@@ -73,15 +73,8 @@ class RegisterController extends Controller
     {
         $verifyUserForReset = $this->userService->verifyUserForReset($request, $hash);
         
-        return  $verifyUserForReset
-                ? redirect()
-
+        return  redirect()
                 ->route('signin')
-                ->with('msg', 'Senha alterada com successo! efetue o login.')
-
-                : redirect()
-
-                ->route('reset-new-password', ['hash' => $hash])
-                ->with('msg', 'Token inválido para resetar senha ou usuário não encontrado!');
+                ->with('msg', 'Senha alterada com successo! efetue o login.');
     }
 }

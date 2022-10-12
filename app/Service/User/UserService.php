@@ -184,6 +184,7 @@ class UserService extends AbstractUserService
         }
 
         $userForReset->password = md5($request->password);
+        $userForReset->reset_passsword = null;
         $userForReset->save();
 
         return true;
