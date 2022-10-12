@@ -150,10 +150,10 @@ class UserService extends AbstractUserService
         
         $userReset = $this->repository->where('email', $request->email)->first();
         $this->generateHashVerify($userReset->email);
-
+        
         $userReset->reset_passsword = $this->hashResetPassword;
         $userReset->save();
-        
+
         $construct = new ResetPassword(
             'Recuperar conta do NEXTBANK!',
             $userReset->email,
@@ -162,5 +162,30 @@ class UserService extends AbstractUserService
         );
 
         $construct->handle();
+    }
+
+    public function verifyHashResetPassword($hash): bool
+    {
+        $userReset = $this->repository->where('reset_passsword', $hash)->first();
+        return $userReset ? true : false;
+    }
+
+    public function verifyUserForReset($request, $hash): bool
+    {
+        $rulesAndFeedBacks = new RulesAndFeedBacks;
+        $request->validate(
+            $rulesAndFeedBacks->validatorPasswordResetRules(),
+            $rulesAndFeedBacks->validatorPasswordResetFeedback(),
+        );
+
+        $userForReset = $this->repository->where('reset_passsword', $hash)->first();
+        if(!$userForReset){
+            return false;
+        }
+
+        $userForReset->password = md5($request->password);
+        $userForReset->save();
+
+        return true;
     }
 }

@@ -20,6 +20,7 @@ Route::get('/', [RegisterController::class, 'signin'])->name('signin');
 Route::get('/form/register', [RegisterController::class, 'index'])->name('form-register');
 Route::get('/reset/password', [RegisterController::class, 'resetPassword'])->name('reset-password');
 Route::get('/reset/newPassword/{hash}', [RegisterController::class, 'resetNewPassword'])->name('reset-new-password');
+Route::post('/reset/newPassword/user/{hash}', [RegisterController::class, 'resetNewPasswordUser'])->name('reset-new-password-user');
 Route::post('/reset/password/user', [RegisterController::class, 'resetPasswordUser'])->name('reset-password-user');
 Route::post('/regiter/user', [RegisterController::class, 'register'])->name('register-user');
 

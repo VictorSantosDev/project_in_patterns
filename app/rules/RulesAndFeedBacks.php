@@ -61,4 +61,21 @@ class RulesAndFeedBacks
             'email' => 'O e-mail está inválido'
         ];
     }
+
+    public function validatorPasswordResetRules(): array
+    {
+        return [
+            "password" => "required|min:8|max:15|regex:$this->regexPassword",
+        ];
+    }
+
+    public function validatorPasswordResetFeedback(): array
+    {
+        return [
+            'required' => 'O campo não pode ser vazio!',
+            'password.regex' => 'Senha deve conter números, letras e simbolos!',
+            'password.min' => 'Senha tem que ter no minimo 8 caracteres!',
+            'password.max' => 'Senha tem que ter no maximo 15 caracteres!',
+        ];
+    }
 }

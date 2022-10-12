@@ -60,8 +60,28 @@ class RegisterController extends Controller
 
     public function resetNewPassword($hash)
     {
+        $verifyResetHash = $this->userService->verifyHashResetPassword($hash);
 
-        // return 
-        // dd('ok voce está aqui');
+        return  $verifyResetHash
+                ? view('login.new-password', ['hash' => $hash])
+                : redirect()
+                ->route('signin')
+                ->with('msg', 'Token inválido para resetar senha!');
+    }
+
+    public function resetNewPasswordUser(Request $request, $hash)
+    {
+        $verifyUserForReset = $this->userService->verifyUserForReset($request, $hash);
+        
+        return  $verifyUserForReset
+                ? redirect()
+
+                ->route('signin')
+                ->with('msg', 'Senha alterada com successo! efetue o login.')
+
+                : redirect()
+
+                ->route('reset-new-password', ['hash' => $hash])
+                ->with('msg', 'Token inválido para resetar senha ou usuário não encontrado!');
     }
 }
