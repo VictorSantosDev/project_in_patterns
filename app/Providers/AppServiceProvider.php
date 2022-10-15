@@ -17,11 +17,6 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contract\UserRepositoryInterface', 
             'App\Repositories\Eloquent\UserRepository',
         );
-
-        $this->app->bind(
-            'Modules\Dashboard\Repositories\Contract\UserRepositoryInterface', 
-            'Modules\Dashboard\Repositories\Eloquent\UserRepository',
-        );
     }
 
     /**

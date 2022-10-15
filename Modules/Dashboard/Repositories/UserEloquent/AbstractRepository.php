@@ -1,14 +1,16 @@
 <?php
 
-namespace Modules\Dashboard\Repositories\Eloquent;
+namespace Modules\Dashboard\Repositories\UserEloquent;
+
+use Modules\Dashboard\Entities\User;
 
 abstract class AbstractRepository
 {
     protected $model;
 
-    public function __construct()
+    public function __construct(User $model)
     {
-        $this->model = $this->resolveModel();
+        $this->model = $model;
     }
     
     public function all()
@@ -19,10 +21,5 @@ abstract class AbstractRepository
     public function where($key, $value)
     {
         return $this->model->where($key, $value);
-    }
-    
-    protected function resolveModel()
-    {
-        return app($this->model);
     }
 }

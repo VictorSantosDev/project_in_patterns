@@ -26,7 +26,7 @@
                     <a class="nav-link active" aria-current="page" href="#">DashBoard</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#">Carteira Cliente</a>
+                    <a class="nav-link" href="{{ route('app.user-wallet', ['token' => $token]) }}">Carteira Cliente</a>
                     </li>
                 </ul>
                 </div>

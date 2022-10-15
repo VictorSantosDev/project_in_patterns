@@ -5,83 +5,38 @@ namespace Modules\Dashboard\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Dashboard\services\User\UserService;
+use Modules\Dashboard\services\UserWallet\UserWalletService;
 
 class DashboardController extends Controller
 {
-    private $userService;
+    /** @var  UserWalletService */
+    private $service;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserWalletService $userService)
     {
-        $this->userService = $userService;
+        $this->service = $userService;
     }
 
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function dashboard($token)
     {
-        return view('dashboard::home');
+        return view('dashboard::dashboard', [
+            'token' => $token
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
+    public function userWallet($token)
     {
-        return view('dashboard::create');
+        return view('dashboard::user-wallet', [
+            'token' => $token
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
+    public function importUserWallet($token)
     {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('dashboard::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('dashboard::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        dd('enviado');
     }
 }
