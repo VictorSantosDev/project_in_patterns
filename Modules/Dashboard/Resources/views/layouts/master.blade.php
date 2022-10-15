@@ -23,10 +23,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">DashBoard</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('app.dashboard', ['token' => $token]) }}">DashBoard</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="{{ route('app.user-wallet', ['token' => $token]) }}">Carteira Cliente</a>
+                        <a class="nav-link" href="{{ route('app.user-wallet', ['token' => $token]) }}">Carteira Cliente</a>
                     </li>
                 </ul>
                 </div>

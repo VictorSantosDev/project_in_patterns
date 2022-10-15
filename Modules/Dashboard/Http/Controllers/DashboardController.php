@@ -5,6 +5,7 @@ namespace Modules\Dashboard\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Dashboard\Http\Requests\UserWalletRequest;
 use Modules\Dashboard\services\UserWallet\UserWalletService;
 
 class DashboardController extends Controller
@@ -35,8 +36,9 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function importUserWallet($token)
+    public function importUserWallet(UserWalletRequest $request, $token)
     {
-        dd('enviado');
+        dd('ok');
+        dd($request->file('file_user_wallet'));
     }
 }

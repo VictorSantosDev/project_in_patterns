@@ -11,10 +11,10 @@ class UserWalletRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'file_user_wallet' => 'required|mimes:xlsx'
         ];
     }
 
@@ -26,5 +26,13 @@ class UserWalletRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function messages(): array
+    {
+        return [
+            'file_user_wallet.mimes' => 'O arquivo dever ser .xlsx',
+            'file_user_wallet.required' => 'Necessário selecionar um arquivo'
+        ];
     }
 }

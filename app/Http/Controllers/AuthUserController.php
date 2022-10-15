@@ -30,7 +30,7 @@ class AuthUserController extends Controller
         if($selectRoute === 'not_success'){
             return redirect()->route('signin')
                             ->with([
-                                'msg' => 'Esse usuário não existe, por favor crie uam conta!',
+                                'msg' => 'Senha inválida!',
                                 'not_exist' => true
                             ]);
         }
