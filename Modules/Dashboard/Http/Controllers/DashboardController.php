@@ -2,9 +2,14 @@
 
 namespace Modules\Dashboard\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use App\Imports\UserWalletImport;
+use Exception;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Carbon;
 use Modules\Dashboard\Http\Requests\UserWalletRequest;
 use Modules\Dashboard\services\UserWallet\UserWalletService;
 
@@ -38,7 +43,18 @@ class DashboardController extends Controller
 
     public function importUserWallet(UserWalletRequest $request, $token)
     {
-        dd('ok');
-        dd($request->file('file_user_wallet'));
+        try{
+            DB::table('users_wallet')->truncate();
+            Excel::import(new UserWalletImport, $request->file('file_user_wallet'));
+            
+            return redirect()->route('app.dashboard', [
+                'token' => $token
+                ])->with('success', 'Arquivo enviado!');
+
+        }catch(Exception $e){
+            return redirect()->route('app.dashboard', [
+                'token' => $token
+                ])->with('error', 'Falha na importação, linhas invalidas!');
+        }
     }
 }
