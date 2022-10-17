@@ -2,6 +2,7 @@
 
 namespace Modules\Dashboard\Http\Controllers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Imports\UserWalletImport;
 use Exception;
@@ -47,14 +48,23 @@ class DashboardController extends Controller
             DB::table('users_wallet')->truncate();
             Excel::import(new UserWalletImport, $request->file('file_user_wallet'));
             
+            if(Cache::has('countLineProsse')){
+                Cache::forget('countLineProsse');
+            }
+
             return redirect()->route('app.dashboard', [
                 'token' => $token
                 ])->with('success', 'Arquivo enviado!');
 
         }catch(Exception $e){
+            
+            if(Cache::has('countLineProsse')){
+                Cache::forget('countLineProsse');
+            }
+
             return redirect()->route('app.dashboard', [
                 'token' => $token
-                ])->with('error', 'Falha na importação, linhas invalidas!');
+                ])->with('error', "Falha na importação, linha: {$e->getMessage()} invalidas!");
         }
     }
 }

@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Illuminate\Support\Facades\Cache;
 
 class UserWalletImport implements ToModel, SkipsEmptyRows, WithValidation, WithHeadingRow
 {
@@ -23,10 +24,6 @@ class UserWalletImport implements ToModel, SkipsEmptyRows, WithValidation, WithH
     */
     public function model(array $row)
     {
-        if($this->countLineProsse > 0){
-            $this->countLineProsse;
-        }
-
         return new UserWallet([
             'year' => $row['year'],
             'month' => $row['month'],
@@ -40,22 +37,22 @@ class UserWalletImport implements ToModel, SkipsEmptyRows, WithValidation, WithH
         return [
             'year' => function($attribute, $value, $onFailure) {
                 $validate = new UserWalletValidation;
-                $validate->validateYear($value);
+                $validate->validateYear((string) $value);
             },
 
             'month' => function($attribute, $value, $onFailure) {
                 $validate = new UserWalletValidation;
-                $validate->validateMonth($value);
+                $validate->validateMonth((string) $value);
             },
              
             'name' => function($attribute, $value, $onFailure) {
                 $validate = new UserWalletValidation;
-                $validate->validateName($value);
+                $validate->validateName((string) $value);
             },
 
             'cpf' => function($attribute, $value, $onFailure) {
                 $validate = new UserWalletValidation;
-                $validate->validateCpf($value);
+                $validate->validateCpf((string) $value);
             },
         ];
     }
