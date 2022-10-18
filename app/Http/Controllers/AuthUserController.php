@@ -50,6 +50,6 @@ class AuthUserController extends Controller
             return redirect()->route('signin');
         }
 
-        return redirect()->route('app.home', ['token', $token]);
+        return redirect()->route('app.dashboard', ['token', $token]);
     }
 }

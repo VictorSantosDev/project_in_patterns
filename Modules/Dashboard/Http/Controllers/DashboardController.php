@@ -11,6 +11,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Carbon;
+use Modules\Dashboard\Entities\LogUserWalletFailed;
 use Modules\Dashboard\Http\Requests\UserWalletRequest;
 use Modules\Dashboard\services\UserWallet\UserWalletService;
 
