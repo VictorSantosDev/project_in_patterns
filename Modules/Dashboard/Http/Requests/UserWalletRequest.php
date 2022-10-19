@@ -14,7 +14,7 @@ class UserWalletRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file_user_wallet' => 'required|mimes:xlsx'
+            'file_user_wallet' => 'required|mimes:xlsx,csv,txt'
         ];
     }
 
@@ -31,7 +31,7 @@ class UserWalletRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'file_user_wallet.mimes' => 'O arquivo dever ser .xlsx',
+            'file_user_wallet.mimes' => 'O arquivo dever ser .xlsx, csv ou txt',
             'file_user_wallet.required' => 'Necessário selecionar um arquivo'
         ];
     }

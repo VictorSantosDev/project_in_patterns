@@ -45,12 +45,15 @@ class DashboardController extends Controller
 
     public function importUserWallet(UserWalletRequest $request, $token)
     {
+        $extensionFile = $request->file('file_user_wallet')->extension();
         try{
-            DB::table('users_wallet')->truncate();
-            Excel::import(new UserWalletImport, $request->file('file_user_wallet'));
-            
-            if(Cache::has('countLineProsse')){
-                Cache::forget('countLineProsse');
+
+            if(in_array($extensionFile, ['csv', 'txt'])){
+                DB::table('users_wallet')->truncate();
+                $this->service->imporFileCsv($request);
+            }else{
+                DB::table('users_wallet')->truncate();
+                Excel::import(new UserWalletImport, $request->file('file_user_wallet'));
             }
 
             return redirect()->route('app.dashboard', [
