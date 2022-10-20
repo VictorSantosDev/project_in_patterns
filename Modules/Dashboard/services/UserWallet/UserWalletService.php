@@ -4,6 +4,7 @@ namespace Modules\Dashboard\services\UserWallet;
 
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class UserWalletService extends AbstractUserWallet
 {
@@ -31,13 +32,8 @@ class UserWalletService extends AbstractUserWallet
                 'cpf'   =>  $this->validatedCpf($file[3], $count),
             ];
 
-            // dispatch
-
-            echo '<pre>';
-            print_r($file);
-            echo '</pre>';
+            // dispatch / $dataFile for job here
         }
-        die();
     }
 
     private function validatedYear(string $year, int $line): int
@@ -77,8 +73,19 @@ class UserWalletService extends AbstractUserWallet
 
         $cpfNumber = (int) $removeTrace;
 
+        $cpf = Validator::make(
+            ['cpf' => $cpfNumber],
+            ['cpf' => 'required|cpf']
+        );
+
         if (strlen($cpfNumber) != 11) {
             throw new Exception("CPF deve conter no maximo 11 digitios e no minimo 11 digitos, erro linha: $line");
         }
+
+        if($cpf->fails()){
+            throw new Exception("CPF está inválido, erro na lina: $line");
+        }
+
+        return $cpfNumber;
     }
 }

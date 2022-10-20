@@ -14,6 +14,8 @@ use Illuminate\Support\Carbon;
 use Modules\Dashboard\Entities\LogUserWalletFailed;
 use Modules\Dashboard\Http\Requests\UserWalletRequest;
 use Modules\Dashboard\services\UserWallet\UserWalletService;
+use Illuminate\Support\Facades\Validator;
+
 
 class DashboardController extends Controller
 {
