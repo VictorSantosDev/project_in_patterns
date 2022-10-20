@@ -70,7 +70,7 @@ class DashboardController extends Controller
 
             return redirect()->route('app.dashboard', [
                 'token' => $token
-                ])->with('error', "Falha na importação, linha: {$e->getMessage()} invalidas!");
+                ])->with('error', $e->getMessage());
         }
     }
 }

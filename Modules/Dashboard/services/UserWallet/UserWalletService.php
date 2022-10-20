@@ -12,15 +12,15 @@ class UserWalletService extends AbstractUserWallet
         return $this->repository->all();
     }
 
-    public function imporFileCsv($request)
+    public function imporFileCsv($request): void
     {
         $fileOpen = fopen($request->file('file_user_wallet'), 'r');
 
-        $count = 0;
+        $count = 1;
 
         while($file = fgetcsv($fileOpen, 0, ';')){
 
-            if($count == 0){
+            if($count == 1){
                 $count++;
                 continue;
             }
@@ -32,6 +32,11 @@ class UserWalletService extends AbstractUserWallet
                 'cpf'   =>  $this->validatedCpf($file[3], $count),
             ];
 
+            echo '<pre>';
+            print_r($dataFile);
+            echo '<pre>';
+
+            $count++;
             // dispatch / $dataFile for job here
         }
     }
@@ -41,7 +46,7 @@ class UserWalletService extends AbstractUserWallet
         try{
             return (int) $year;
         }catch(Exception $e){
-            throw new Exception("A coluna 'year' deve ser do tipo numerica, erro linha: $line");
+            throw new Exception("A coluna 'year' deve ser do tipo numerica, erro linha: $line do arquivo");
         }
     }
 
@@ -50,7 +55,7 @@ class UserWalletService extends AbstractUserWallet
         try{
             return (int) $month;
         }catch(Exception $e){
-            throw new Exception("A coluna 'month' deve ser do tipo numerica, erro linha: $line");
+            throw new Exception("A coluna 'month' deve ser do tipo numerica, erro linha: $line do arquivo");
         }
     }
 
@@ -61,7 +66,7 @@ class UserWalletService extends AbstractUserWallet
                 return (string) $name;
             }
         }catch(Exception $e){
-            throw new Exception("A coluna 'name' deve ser do tipo texto, erro linha: $line");
+            throw new Exception("A coluna 'name' deve ser do tipo texto, erro linha: $line do arquivo");
         }
     }
 
@@ -79,11 +84,11 @@ class UserWalletService extends AbstractUserWallet
         );
 
         if (strlen($cpfNumber) != 11) {
-            throw new Exception("CPF deve conter no maximo 11 digitios e no minimo 11 digitos, erro linha: $line");
+            throw new Exception("CPF deve conter no maximo 11 digitios e no minimo 11 digitos, erro linha: $line do arquivo");
         }
 
         if($cpf->fails()){
-            throw new Exception("CPF está inválido, erro na lina: $line");
+            throw new Exception("CPF está inválido, erro na linha: $line do arquivo");
         }
 
         return $cpfNumber;
