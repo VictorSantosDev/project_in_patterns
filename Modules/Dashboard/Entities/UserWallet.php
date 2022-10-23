@@ -10,7 +10,7 @@ class UserWallet extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['year', 'month', 'name', 'cpf'];
     protected $table = 'users_wallet';
 
     protected static function newFactory()
